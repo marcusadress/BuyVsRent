@@ -54,6 +54,23 @@ function calculate() {
     const kontantinsatsProcent = parseFloat(document.getElementById('kontantinsats').value) / 100;
     const startKapital = parseFloat(document.getElementById('startKapital').value) || 0;
     const insatsKr = pris * kontantinsatsProcent;
+
+    // Varning för att inte ha råd med insats
+    const warningDiv = document.getElementById('affordability-warning');
+    const warningText = document.getElementById('warning-text');
+
+    // --- KONTROLL: Har man råd med kontantinsatsen? ---
+    if (startKapital < insatsKr) {
+        const saknas = insatsKr - startKapital;
+        warningDiv.style.display = 'block';
+        warningText.innerHTML = `Ditt startkapital (<b>${formatMoney(startKapital)}</b>) räcker inte till den valda kontantinsatsen (<b>${formatMoney(insatsKr)}</b>). <br>Du behöver ytterligare <b>${formatMoney(saknas)}</b> för att kunna genomföra köpet.`;
+        
+        // Vi kan välja att nollställa graferna eller visa dem ändå
+        document.getElementById('final-buy').style.color = '#c62828'; // Gör slutsumman röd
+    } else {
+        warningDiv.style.display = 'none';
+        document.getElementById('final-buy').style.color = '#2e7d32'; // Återställ färg
+    }
     
     let nuvarandeBostadsPris = pris;
     let lan = pris - insatsKr;
