@@ -95,6 +95,39 @@ body {
     align-items: center; /* Centrerar resultatkortet/graferna */
 }
 
+/* Styling för varningsmeddelandet */
+#affordability-warning {
+    display: none; /* Döljs via JS när allt är okej */
+    background-color: #fff5f5; /* Väldigt ljusröd bakgrund */
+    color: #c62828; /* Mörkröd text för läsbarhet */
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 6px solid #c62828; /* En tjock röd linje på kanten */
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(198, 40, 40, 0.1);
+}
+
+#affordability-warning h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#warning-text {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+#warning-text b {
+    color: #b71c1c; /* Ännu mörkare röd för betonade belopp */
+}
+
 .result-box {
     background: white;
     padding: 30px;
