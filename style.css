@@ -1,0 +1,169 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between; /* Detta trycker isär logga och meny */
+    align-items: center;
+    padding: 0 40px; /* Marginal på sidorna */
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+header .logo {
+    font-weight: bold;
+    color: #2e7d32;
+    font-size: 1.2rem;
+}
+
+header nav {
+    display: flex;
+    gap: 25px; /* Mellanrum mellan länkarna */
+    align-items: center;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+    /* GÖR DET TYDLIGT ATT DE ÄR KLICKBARA */
+    cursor: pointer; 
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease; /* Gör att färgändringen sker mjukt */
+}
+
+/* EFFEKT NÄR MAN HÅLLER ÖVER */
+header nav a:hover {
+    color: #2e7d32; /* Byter textfärg till din gröna färg */
+    background-color: rgba(46, 125, 50, 0.1); /* En svag grön bakgrundston */
+}
+
+.donate-link {
+    background-color: #2e7d32;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+/* SPECIFIKT FÖR DONERA-KNAPPEN (så den inte blir blek) */
+.donate-link:hover {
+    background-color: #1b5e20 !important; /* En mörkare grön vid hover */
+    color: white !important;
+    transform: translateY(-1px); /* En liten lyfteffekt */
+}
+
+/* VIKTIGT: Justera body så innehållet inte hamnar bakom menyn */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    /*display: flex; */
+    height: 100vh; /* Behåll 100vh */
+    background-color: #f4f7f6;
+    padding-top: 60px; /* Plats för menyn */
+    box-sizing: border-box;
+}
+
+/* LÄGG TILL: Styr kalkylatorns layout */
+#page-kalkylator {
+    display: flex; /* Bara kalkylatorn ska ha sidebar + main-content bredvid varandra */
+    height: calc(100vh - 60px);
+    width: 100%;
+}
+
+#sidebar {
+    width: 400px;
+    min-width: 400px; /* Hindrar den från att tryckas ihop */
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    height: 100%;
+}
+
+#main-content {
+    flex-grow: 1; /* Tar upp resten av bredden */
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrerar resultatkortet/graferna */
+}
+
+.result-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 900px; /* Gör att grafen inte blir för bred på stora skärmar */
+}
+
+/* Styling för info-sidan */
+#page-om-oss {
+    display: none;
+    width: 100%;
+    overflow-y: auto;
+    background-color: #f4f7f6;
+}
+
+.info-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.factors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.factor-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: left;
+    border-top: 4px solid #2e7d32; /* Den gröna färgen som tema */
+}
+
+.factor-card h3 {
+    margin-top: 0;
+    color: #2e7d32;
+    font-size: 1.2rem;
+}
+
+.factor-card ul {
+    list-style-type: none; /* Detta tar bort punktlistans prickar korrekt */
+    padding: 0;
+    margin: 0;
+}
+
+.factor-card li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.4;
+    list-style-type: none; /* Tar bort prickarna för en renare look */
+}
+
+.factor-card li strong {
+    color: #333;
+    display: block; /* Lägger rubriken i punkten på en egen rad */
+}
+
+/*Charts */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+}

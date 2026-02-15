@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bostadskalkylator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f7f6;
+        }
+
+        /* Vänster sida - Inputs */
+        #sidebar {
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        /* Höger sida - Resultat */
+        #main-content {
+            flex-grow: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 { color: #333; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        h3 { margin-top: 20px; font-size: 1.1em; color: #444; }
+
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label { font-size: 0.9em; color: #555; flex: 1; }
+
+        input {
+            width: 120px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #e8f5e9; /* Grön ton som i bilden */
+            text-align: right;
+        }
+
+        .result-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            min-width: 300px;
+        }
+
+        #output-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h2>Parametrar</h2>
+    
+    <div class="input-group">
+        <label>Antal år</label>
+        <input type="number" id="antalAr" value="25">
+    </div>
+
+    <div class="input-group">
+        <label>Bostadspris (kr)</label>
+        <input type="number" id="bostadspris" value="2500000">
+    </div>
+
+    <div class="input-group">
+        <label>Kontantinsats (%)</label>
+        <input type="number" id="kontantinsats" value="15" step="0.1">
+    </div>
+
+    <div class="input-group">
+        <label>Ränta (%)</label>
+        <input type="number" id="ranta" value="2.90" step="0.01">
+    </div>
+
+    <div class="input-group">
+        <label>Bostadsutveckling (%)</label>
+        <input type="number" id="utveckling" value="5.00" step="0.01">
+    </div>
+
+    <div class="input-group">
+        <label>Bostadsavgift (kr)</label>
+        <input type="number" id="avgift" value="3500">
+    </div>
+
+    <div class="input-group">
+        <label>Månatlig hyra (kr)</label>
+        <input type="number" id="hyra" value="9800">
+    </div>
+
+    <div class="input-group">
+        <label>Sparande per månad (kr)</label>
+        <input type="number" id="sparPerM" value="9800">
+    </div>
+
+    <div class="input-group">
+        <label>Stock Return (%)</label>
+        <input type="number" id="stockReturn" value="11.00" step="0.1">
+    </div>
+
+    <div class="input-group">
+        <label>Startkapital (kr)</label>
+        <input type="number" id="startKapital" value="900000">
+    </div>
+
+    <div class="input-group">
+        <label>Ökning av sparande per år (%)</label>
+        <input type="number" id="okningSpar" value="3.00">
+    </div>
+
+    <div class="input-group">
+        <label>Förväntad inflation (%)</label>
+        <input type="number" id="inflation" value="2.50">
+    </div>
+    <div class="input-group">
+        <label>Hyreökning per år (%)</label>
+        <input type="number" id="hyreOkning" value="2.50">
+    </div>
+
+    <h3>Övriga Kostnader</h3>
+    <div class="input-group">
+        <label>Transaktionskostnader vid försälning (kr)</label>
+        <input type="number" id="transaktionsKostnader" value="50000">
+    </div>
+
+    <div class="input-group">
+        <label>Mäklararvode (%)</label>
+        <input type="number" id="maklare" value="3.00" step="0.1">
+    </div>
+
+    <h3>Skatt</h3>
+    <div class="input-group">
+        <label>Schablonskatt ISK (%)</label>
+        <input type="number" id="iskSkatt" value="1.065" step="0.001">
+    </div>
+    <div class="input-group">
+        <label>Kapitalvinstskatt (%)</label>
+        <input type="number" id="kapitalVinstSkatt" value="22" step="0.5">
+    </div>
+
+    <h3>Månadsbudget (Utgifter)</h3>
+    <div class="input-group">
+        <label>Lön och andra inkomster per månad (kr)</label>
+        <input type="number" id="budgetInkomst" value="40500">
+    </div>
+    <div class="input-group">
+        <label>Mat (hemma)</label>
+        <input type="number" id="budgetMat" value="3800">
+    </div>
+    <div class="input-group">
+        <label>Hushållsel och värme</label>
+        <input type="number" id="budgetVarmeOchEl" value="500">
+    </div>
+    <div class="input-group">
+        <label>Uteluncher/Nöjen</label>
+        <input type="number" id="budgetNoje" value="500">
+    </div>
+    <div class="input-group">
+        <label>Hygien & Hälsa</label>
+        <input type="number" id="budgetHygien" value="500">
+    </div>
+    <div class="input-group">
+        <label>Kläder & Skor</label>
+        <input type="number" id="budgetKlader" value="700">
+    </div>
+    <div class="input-group">
+        <label>Förbrukningsvaror</label>
+        <input type="number" id="budgetForbruk" value="200">
+    </div>
+    <div class="input-group">
+        <label>Hemutrustning</label>
+        <input type="number" id="budgetHemutr" value="500">
+    </div>
+    <div class="input-group">
+        <label>Lokaltrafik</label>
+        <input type="number" id="budgetResor" value="1060">
+    </div>
+    <div class="input-group">
+        <label>Mobilabonnemang och bredband</label>
+        <input type="number" id="budgetMobilochNätverk" value="600">
+    </div>
+    <div class="input-group">
+        <label>Streaming/Media</label>
+        <input type="number" id="budgetStream" value="300">
+    </div>
+    <div class="input-group">
+        <label>Gym / Träning</label>
+        <input type="number" id="budgetGym" value="0">
+    </div>
+    <div class="input-group">
+        <label>A-kassa & Facket</label>
+        <input type="number" id="budgetFack" value="200">
+    </div>
+    <div class="input-group">
+        <label>CSN lån</label>
+        <input type="number" id="budgetCsn" value="1400">
+    </div>
+    <div class="input-group">
+        <label>Annat</label>
+        <input type="number" id="budgetAnnat" value="0">
+    </div>
+
+</div>
+
+
+
+<div id="main-content">
+    <div class="result-box" style="width: 90%; max-width: 800px;">
+        <h2>Kapitalutveckling (25 år)</h2>
+        <p>Jämförelse mellan att äga och hyra över tid.</p>
+        
+        <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+            <div>
+                <small>Slutvärde Köpa</small>
+                <div id="final-buy" style="color: #2e7d32; font-size: 1.5em; font-weight: bold;">0 kr</div>
+            </div>
+            <div>
+                <small>Slutvärde Hyra</small>
+                <div id="final-rent" style="color: #1565c0; font-size: 1.5em; font-weight: bold;">0 kr</div>
+            </div>
+        </div>
+
+        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+                <thead style="position: sticky; top: 0; background: #eee;">
+                    <tr>
+                        <th style="padding: 8px; border-bottom: 2px solid #ccc;">År</th>
+                        <th style="padding: 8px; border-bottom: 2px solid #ccc;">Tillgångar (Köpa)</th>
+                        <th style="padding: 8px; border-bottom: 2px solid #ccc;">Tillgångar (Hyra)</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        // --- 1. Hämta Grundparametrar ---
+        const ar = parseInt(document.getElementById('antalAr').value) || 0;
+        const pris = parseFloat(document.getElementById('bostadspris').value) || 0;
+        const rantaProcent = parseFloat(document.getElementById('ranta').value) / 100;
+        const bostadsTillvaxt = parseFloat(document.getElementById('utveckling').value) / 100;
+        const stockReturn = parseFloat(document.getElementById('stockReturn').value) / 100;
+        const inflation = parseFloat(document.getElementById('inflation').value) / 100;
+        const hyreOkning = parseFloat(document.getElementById('hyreOkning').value) / 100;
+        const iskSkatt = parseFloat(document.getElementById('iskSkatt').value) / 100;
+        const transaktionsKostnader = parseFloat(document.getElementById('transaktionsKostnader').value) || 0;
+        const maklarArvode = parseFloat(document.getElementById('maklare').value) / 100;
+        const kapitalVinstSkatt = parseFloat(document.getElementById('kapitalVinstSkatt').value) / 100;
+
+        // --- 2. Inkomster och Budgetutgifter ---
+        const inkomst = parseFloat(document.getElementById('budgetInkomst').value) || 0;
+        const budgetIds = [
+            'budgetMat', 'budgetNoje', 'budgetHygien', 'budgetKlader', 
+            'budgetForbruk', 'budgetHemutr', 'budgetResor', 'budgetMobilochNätverk', 
+            'budgetStream', 'budgetGym', 'budgetFack', 'budgetCsn', 'budgetAnnat', 'budgetVarmeOchEl'
+        ];
+        
+        let initialaBudgetUtgifter = 0;
+        budgetIds.forEach(id => {
+            initialaBudgetUtgifter += parseFloat(document.getElementById(id).value) || 0;
+        });
+
+        // --- 3. Initiala värden (År 0) ---
+        const kontantinsatsProcent = parseFloat(document.getElementById('kontantinsats').value) / 100;
+        const startKapital = parseFloat(document.getElementById('startKapital').value) || 0;
+        const insatsKr = pris * kontantinsatsProcent;
+        
+        let nuvarandeBostadsPris = pris;
+        let lan = pris - insatsKr;
+        let bostadsForsaljningsKostnaderOchSkatt = maklarArvode*(nuvarandeBostadsPris) + transaktionsKostnader + kapitalVinstSkatt*(nuvarandeBostadsPris-pris);
+        
+        // Kapital vid År 0
+        let kapitalHyra = startKapital; 
+        let kapitalKopaBorsen = startKapital - insatsKr;
+        let totaltKopa = (nuvarandeBostadsPris - lan) - bostadsForsaljningsKostnaderOchSkatt + kapitalKopaBorsen;
+
+        const hyraStart = parseFloat(document.getElementById('hyra').value) || 0;
+        const avgiftStart = parseFloat(document.getElementById('avgift').value) || 0;
+        
+
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = ""; 
+
+        // --- 4. Rendera År 0 ---
+        appendRow(0, totaltKopa, kapitalHyra);
+
+        // --- 5. Simulation Loop (År 1 till n) ---
+        for (let i = 1; i <= ar; i++) {
+            
+            // Kostnader detta år (inflationsjusterade från föregående år)
+            // Vi använder (i-1) för att kostnaden under år 1 baseras på ingångsvärdena
+            let nuvarandeHyra = hyraStart * Math.pow(1 + hyreOkning, i - 1);
+            let nuvarandeAvgift = avgiftStart * Math.pow(1 + inflation, i - 1);
+            let nuvarandeBudget = initialaBudgetUtgifter * Math.pow(1 + inflation, i - 1);
+            
+            // 1. Beräkna den totala bruttoräntan för året
+            let bruttoRantaAr = lan * rantaProcent;
+
+            // 2. Beräkna ränteavdraget enligt svenska regler:
+            // 30% upp till 100 000 kr, 21% på resten.
+            let ranteAvdrag;
+            if (bruttoRantaAr <= 100000) {
+                ranteAvdrag = bruttoRantaAr * 0.30;
+            } else {
+            // 30% på de första 100k + 21% på det som överstiger 100k
+            ranteAvdrag = (100000 * 0.30) + ((bruttoRantaAr - 100000) * 0.21);
+            }
+
+            // 3. Den faktiska räntekostnaden per månad efter skattereduktion
+            let ranteKostnadManadEfterAvdrag = (bruttoRantaAr - ranteAvdrag) / 12;
+
+            // Månadssparande
+            let sparaManadHyra = inkomst - nuvarandeHyra - nuvarandeBudget;
+            let sparaManadKopa = inkomst - nuvarandeAvgift - ranteKostnadManadEfterAvdrag - nuvarandeBudget;
+
+            // Avkastning på börsen (efter skatt) + nysparande
+            kapitalHyra = (kapitalHyra + (sparaManadHyra * 12)) * (1 + stockReturn - iskSkatt);
+            kapitalKopaBorsen = (kapitalKopaBorsen + (sparaManadKopa * 12)) * (1 + stockReturn - iskSkatt);
+            
+            // Bostadens värdeökning
+            nuvarandeBostadsPris *= (1 + bostadsTillvaxt);
+            bostadsForsaljningsKostnaderOchSkatt = maklarArvode*(nuvarandeBostadsPris) + transaktionsKostnader + kapitalVinstSkatt*(nuvarandeBostadsPris-pris);
+            totaltKopa = (nuvarandeBostadsPris - lan) - bostadsForsaljningsKostnaderOchSkatt  + kapitalKopaBorsen;
+
+            appendRow(i, totaltKopa, kapitalHyra);
+
+            if (i === ar) {
+                document.getElementById('final-buy').innerText = formatMoney(totaltKopa);
+                document.getElementById('final-rent').innerText = formatMoney(kapitalHyra);
+            }
+        }
+
+        // Hjälpfunktion för att lägga till rader
+        function appendRow(year, kopa, hyra) {
+            const row = `<tr>
+                <td style="padding: 8px; text-align: center; border-bottom: 1px solid #eee;">${year === 0 ? 'Start (0)' : 'År ' + year}</td>
+                <td style="padding: 8px; text-align: right; border-bottom: 1px solid #eee;">${formatMoney(kopa)}</td>
+                <td style="padding: 8px; text-align: right; border-bottom: 1px solid #eee;">${formatMoney(hyra)}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        }
+    }
+
+    function formatMoney(val) {
+        return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', maximumFractionDigits: 0 }).format(val);
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', calculate);
+    });
+
+    window.onload = calculate;
+</script>
+
+</body>
+</html>
