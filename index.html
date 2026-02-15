@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bostadskalkylator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+    <div class="logo">Bostadskalkylator</div>
+    <nav>
+        <a onclick="showPage('kalkylator')">Kalkylator</a>
+        <a onclick="showPage('om-oss')">Så har vi räknat</a>
+        <a onclick="showPage('donera')" class="donate-link">Donera</a>
+    </nav>
+</header>
+
+<div id="page-kalkylator" class="page">
+
+    <div id="sidebar">
+        <h2>Parametrar</h2>
+        
+        <div class="input-group">
+            <label>Antal år</label>
+            <input type="number" id="antalAr" value="25">
+        </div>
+
+        <div class="input-group">
+            <label>Bostadspris (kr)</label>
+            <input type="number" id="bostadspris" value="2500000">
+        </div>
+
+        <div class="input-group">
+            <label>Kontantinsats (%)</label>
+            <input type="number" id="kontantinsats" value="15" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label>Ränta (%)</label>
+            <input type="number" id="ranta" value="2.90" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label>Bostadsutveckling (%)</label>
+            <input type="number" id="utveckling" value="5.00" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label>Bostadsavgift (kr)</label>
+            <input type="number" id="avgift" value="3500">
+        </div>
+
+        <div class="input-group">
+            <label>Månatlig hyra (kr)</label>
+            <input type="number" id="hyra" value="9800">
+        </div>
+
+        <!-- <div class="input-group">
+            <label>Sparande per månad (kr)</label>
+            <input type="number" id="sparPerM" value="9800">
+        </div> -->
+
+        <div class="input-group">
+            <label>Stock Return (%)</label>
+            <input type="number" id="stockReturn" value="11.00" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label>Startkapital (kr)</label>
+            <input type="number" id="startKapital" value="900000">
+        </div>
+
+        <div class="input-group">
+            <label>Ökning av sparande per år (%)</label>
+            <input type="number" id="okningSpar" value="3.00">
+        </div>
+
+        <div class="input-group">
+            <label>Förväntad inflation (%)</label>
+            <input type="number" id="inflation" value="2.50">
+        </div>
+        <div class="input-group">
+            <label>Hyreökning per år (%)</label>
+            <input type="number" id="hyreOkning" value="2.50">
+        </div>
+
+        <h3>Övriga Kostnader</h3>
+        <div class="input-group">
+            <label>Transaktionskostnader vid försälning (kr)</label>
+            <input type="number" id="transaktionsKostnader" value="50000">
+        </div>
+
+        <div class="input-group">
+            <label>Mäklararvode (%)</label>
+            <input type="number" id="maklare" value="3.00" step="0.1">
+        </div>
+
+        <h3>Skatt</h3>
+        <div class="input-group">
+            <label>Schablonskatt ISK (%)</label>
+            <input type="number" id="iskSkatt" value="1.065" step="0.001">
+        </div>
+        <div class="input-group">
+            <label>Kapitalvinstskatt (%)</label>
+            <input type="number" id="kapitalVinstSkatt" value="22" step="0.5">
+        </div>
+
+        <h3>Månadsbudget (Utgifter)</h3>
+        <div class="input-group">
+            <label>Lön och andra inkomster per månad - Netto (kr)</label>
+            <input type="number" id="budgetInkomst" value="32000">
+        </div>
+        <div class="input-group">
+            <label>Mat (hemma)</label>
+            <input type="number" id="budgetMat" value="3800">
+        </div>
+        <div class="input-group">
+            <label>Hushållsel och värme</label>
+            <input type="number" id="budgetVarmeOchEl" value="500">
+        </div>
+        <div class="input-group">
+            <label>Uteluncher/Nöjen</label>
+            <input type="number" id="budgetNoje" value="500">
+        </div>
+        <div class="input-group">
+            <label>Hygien & Hälsa</label>
+            <input type="number" id="budgetHygien" value="500">
+        </div>
+        <div class="input-group">
+            <label>Kläder & Skor</label>
+            <input type="number" id="budgetKlader" value="700">
+        </div>
+        <div class="input-group">
+            <label>Förbrukningsvaror</label>
+            <input type="number" id="budgetForbruk" value="200">
+        </div>
+        <div class="input-group">
+            <label>Hemutrustning</label>
+            <input type="number" id="budgetHemutr" value="500">
+        </div>
+        <div class="input-group">
+            <label>Lokaltrafik</label>
+            <input type="number" id="budgetResor" value="1060">
+        </div>
+        <div class="input-group">
+            <label>Mobilabonnemang och bredband</label>
+            <input type="number" id="budgetMobilochNätverk" value="600">
+        </div>
+        <div class="input-group">
+            <label>Streaming/Media</label>
+            <input type="number" id="budgetStream" value="300">
+        </div>
+        <div class="input-group">
+            <label>Gym / Träning</label>
+            <input type="number" id="budgetGym" value="0">
+        </div>
+        <div class="input-group">
+            <label>A-kassa & Facket</label>
+            <input type="number" id="budgetFack" value="200">
+        </div>
+        <div class="input-group">
+            <label>CSN lån</label>
+            <input type="number" id="budgetCsn" value="1400">
+        </div>
+        <div class="input-group">
+            <label>Annat</label>
+            <input type="number" id="budgetAnnat" value="0">
+        </div>
+
+    </div>
+
+    <div id="main-content">
+        <div class="result-box" style="width: 95%; max-width: 900px;">
+            <h2>Ekonomisk Jämförelse</h2>
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+                <div><small>Slutvärde Köpa</small><div id="final-buy" style="color: #2e7d32; font-size: 1.5em; font-weight: bold;">0 kr</div></div>
+                <div><small>Slutvärde Hyra</small><div id="final-rent" style="color: #1565c0; font-size: 1.5em; font-weight: bold;">0 kr</div></div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="capitalChart"></canvas>
+            </div>
+            <div class="chart-container" style="margin-top: 40px;">
+                <canvas id="savingsChart"></canvas>
+            </div>
+
+            <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; margin-top: 30px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+                    <thead style="position: sticky; top: 0; background: #eee;">
+                        <tr>
+                            <th>År</th>
+                            <th>Mån.spar (Köp)</th>
+                            <th>Mån.spar (Hyra)</th>
+                            <th>Tillgångar (Köp)</th>
+                            <th>Tillgångar (Hyra)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="page-om-oss" class="page" style="display:none;">
+    <div class="info-container">
+        <h1>Så har vi räknat</h1>
+        <p>Kalkylatorn gör en omfattande simulering av din ekonomi över tid. Här är de viktigaste faktorerna vi tar hänsyn till:</p>
+        
+        <div class="factors-grid">
+            <div class="factor-card">
+                <h3>🏠 Boendekostnader</h3>
+                <ul>
+                    <li><strong>Räntekostnader:</strong> Vi simulerar hur räntekostnaden sjunker i takt med att lånet amorteras.</li>
+                    <li><strong>Ränteavdrag:</strong> Skattereduktionen på 30% (upp till 100kkr) räknas med automatiskt.</li>
+                    <li><strong>Amortering:</strong> Logik för 3% amortering vid lån över 4.5x årsinkomst, samt sänkning till 1% vid under 70% belåning.</li>
+                    <li><strong>Avgift & Hyra:</strong> Vi räknar med årliga höjningar baserat på inflation och marknad.</li>
+                </ul>
+            </div>
+
+            <div class="factor-card">
+                <h3>📈 Investeringar & Skatt</h3>
+                <ul>
+                    <li><strong>Börsutveckling:</strong> Avkastning på börsen baseras på vald "Stock Return".</li>
+                    <li><strong>Schablonskatt:</strong> Vi drar av aktuell schablonskatt för ISK årligen.</li>
+                    <li><strong>Kapitalvinstskatt:</strong> Vid försäljning av bostad räknas 22% skatt på vinsten.</li>
+                    <li><strong>Startkapital:</strong> Vi tar hänsyn till att startkapitalet på börsen skiljer sig beroende på om du betalar en kontantinsats eller inte.</li>
+                </ul>
+            </div>
+
+            <div class="factor-card">
+                <h3>💰 Löpande Ekonomi</h3>
+                <ul>
+                    <li><strong>Löneutveckling:</strong> Din inkomst och ditt sparande ökar procentuellt varje år.</li>
+                    <li><strong>Inflation:</strong> Övriga levnadskostnader (mat, el, försäkring) justeras upp med inflationen.</li>
+                    <li><strong>Försäljningsavgifter:</strong> Mäklare och transaktionskostnader dras av från slutvärdet vid ägt boende.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-donera" class="page" style="display:none; padding: 50px; text-align: center;">
+    <h2>Donera</h2>
+    <p>Gillar du verktyget? Swisha gärna en kaffe!</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
